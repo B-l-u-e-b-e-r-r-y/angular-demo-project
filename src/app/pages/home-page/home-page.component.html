@@ -1,0 +1,55 @@
+<mat-grid-list cols='4' rowHeight='50vh'>
+    <mat-grid-tile colspan='2'>
+        <app-card 
+            [title]='topTenCongestedRoadsCard.title'
+            [dataTime]='topTenCongestedRoadsCard.dataTime'
+            [filterString]='topTenCongestedRoadsCard.filterString'
+            [componentName]='topTenCongestedRoadsCard.componentName'
+            (filterEventEmitter)='getTopTenCongestedRoadsData($event)'
+            class='full-content padding'>
+            <app-bar-chart [data]='topTenCongestedRoads' class='w100'></app-bar-chart>
+        </app-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-card 
+            [title]='topTenEasyCongestedRoadsCard.title'
+            [dataTime]='topTenEasyCongestedRoadsCard.dataTime'
+            [componentName]='topTenEasyCongestedRoadsCard.componentName'
+            (filterEventEmitter)='getTopTenEasyCongestedRoadsData($event)'
+            class='full-content padding'>
+            <app-bar-chart [data]='topTenEasyCongestedRoads' class='w100'></app-bar-chart>
+        </app-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-card 
+            [title]='roadAvgTravelSpeedCard.title'
+            [dataTime]='roadAvgTravelSpeedCard.dataTime'
+            [componentName]='roadAvgTravelSpeedCard.componentName'
+            (filterEventEmitter)='getRoadAvgTravelSpeedData($event)'
+            class='full-content padding'>
+            <app-line-chart [data]='roadAvgTravelSpeed' class='w100'></app-line-chart>
+        </app-card>
+    </mat-grid-tile>
+</mat-grid-list>
+<mat-grid-list cols='2' rowHeight='50vh'>
+    <mat-grid-tile>
+        <app-card 
+            [title]='spatiotemporalAnalysisCard.title'
+            [dataTime]='spatiotemporalAnalysisCard.dataTime'
+            [componentName]='spatiotemporalAnalysisCard.componentName'
+            (filterEventEmitter)='getSpatiotemporalAnalysisData($event)'
+            class='full-content padding'>
+            <app-heatmap-chart [data]='spatiotemporalAnalysis' class='w100'></app-heatmap-chart>
+        </app-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <app-card 
+            [title]='trafficTrendCard.title'
+            [dataTime]='trafficTrendCard.dataTime'
+            [componentName]='trafficTrendCard.componentName'
+            (filterEventEmitter)='getTrafficTrendData($event)'
+            class='full-content padding'>
+            <app-trend-line-chart [data]='trafficTrend' class='w100'></app-trend-line-chart>
+        </app-card>
+    </mat-grid-tile>
+</mat-grid-list>

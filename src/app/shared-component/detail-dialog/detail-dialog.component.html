@@ -1,0 +1,15 @@
+<div class='basic-dialog'>
+  <div class='basic-dialog-title'>
+    <h1>{{ title }}</h1>
+    <button mat-button class='download-csv' (click)='downloadCSV()'>
+      <fa-icon [icon]='faFileExport' class='icon'></fa-icon>
+    </button>
+  </div>
+  <p>{{ dataTime }}</p>
+  <div class='full-content'>
+    <app-table [data]="tableData"></app-table>
+  </div>
+  <button mat-button mat-dialog-close class='close-dialog'>
+    <fa-icon [icon]='faTimes' class='icon'></fa-icon>
+  </button>
+</div>

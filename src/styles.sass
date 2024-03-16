@@ -1,0 +1,72 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'themes/custom-theme.scss'
+@import 'themes/mat-card.sass'
+@import 'themes/mat-expansion-panel.sass'
+@import 'themes/mat-dialog.sass'
+@import 'themes/mat-menu.sass'
+
+h1
+    font-size: 17px !important
+    font-weight: bold !important
+    margin: 0 !important
+
+p
+    font-size: 16px
+
+span
+    font-size: 14px
+
+button:focus
+    outline: none !important
+
+.full-content
+    width: 100%
+    height: 100%
+    margin: 0
+    padding: 0
+
+.padding
+    padding: 0.5rem
+
+.w100
+    width: 100%
+
+.w50
+    width: 50%
+
+.h100
+    height: 100%
+
+.loading
+    position: fixed
+    width: 100vw
+    height: 100vh
+    top: 0
+    left: 0
+    background-color: rgba(0, 0, 0, 0.5)
+    z-index: 500
+    display: flex
+    justify-content: center
+    align-items: center
+
+$scrollbar-color: rgba(55, 55, 55, .3)
+$scrollbar-bg: rgba(200, 200, 200, .9)
+/* The emerging W3C standard
+   that is currently Firefox-only */
+*
+  scrollbar-width: thin
+  scrollbar-color: $scrollbar-color $scrollbar-bg
+
+
+/* Works on Chrome/Edge/Safari */
+*::-webkit-scrollbar
+  width: 8px
+  height: 8px
+
+*::-webkit-scrollbar-track
+  background: $scrollbar-bg
+
+*::-webkit-scrollbar-thumb
+  background-color: $scrollbar-color
+  border-radius: 6px

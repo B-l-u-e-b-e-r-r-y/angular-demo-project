@@ -1,0 +1,11 @@
+<mat-radio-group class="options-radio-group" [(ngModel)]="selectedOption">
+    <mat-radio-button
+        class="options-radio-button"
+        *ngFor="let item of data"
+        [value]="item.value"
+        color='primary'
+        [name]='item.group'
+        (click)='clickOption(item)'>
+        {{ item.name }}
+    </mat-radio-button>
+</mat-radio-group>

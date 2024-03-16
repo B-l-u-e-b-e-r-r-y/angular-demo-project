@@ -1,0 +1,40 @@
+<mat-card class='_card'>
+    <mat-card-header class='_card-header'>
+        <mat-card-title>
+            <h1>{{ title }}</h1>
+        </mat-card-title>
+        <mat-card-subtitle *ngIf='dataTime.length > 0'>
+            <fa-icon [icon]='faClock'></fa-icon>
+            <span class='data-time'>{{ dataTime }}</span>
+        </mat-card-subtitle>
+        <mat-card-subtitle *ngIf='filterString.length > 0'>
+            <fa-icon [icon]='faFilter'></fa-icon>
+            <span class='data-time'
+                [matTooltip]='fullFilterString'
+                matTooltipClass='tooltip-class'
+                matTooltipPosition='below'>{{ filterString }}</span>
+        </mat-card-subtitle>
+        <div *ngIf='componentName'>
+            <button mat-button class='menu-button' [matMenuTriggerFor]='menu'>
+                <fa-icon [icon]='faBars' class='menu-icon'></fa-icon>
+            </button>
+            <mat-menu #menu='matMenu'>
+                <button mat-menu-item (click)='openChartDialog()'>
+                    <fa-icon [icon]='faSearch' class='menu-list-icon'></fa-icon>
+                    <span>放大檢視</span>
+                </button>
+                <button mat-menu-item (click)='openDetailDialog()' *ngIf='isDetail'>
+                    <fa-icon [icon]='faInfoCircle' class='menu-list-icon'></fa-icon>
+                    <span>詳細資訊</span>
+                </button>
+                <button mat-menu-item (click)='openFilterDialog()' *ngIf='isFilter'>
+                    <fa-icon [icon]='faFilter' class='menu-list-icon'></fa-icon>
+                    <span>過濾篩選</span>
+                </button>
+            </mat-menu>
+        </div>
+    </mat-card-header>
+    <mat-card-content class='content-style'>
+        <ng-content></ng-content>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,6 @@
+<mat-form-field appearance="fill">
+  <mat-label>Select hour</mat-label>
+  <mat-select (selectionChange)="afterSelect()" [(value)]="selected">
+    <mat-option *ngFor="let hour of hours" [value]="hour">{{hour}}</mat-option>
+  </mat-select>
+</mat-form-field>

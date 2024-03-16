@@ -1,0 +1,21 @@
+<ng-template #lineChart>
+    <app-line-chart [data]='data'></app-line-chart>
+</ng-template>
+<ng-template #trendLineChart>
+    <app-trend-line-chart [data]='data'></app-trend-line-chart>
+</ng-template>
+<ng-template #barChart>
+    <app-bar-chart [data]='data'></app-bar-chart>
+</ng-template>
+<ng-template #heatmap>
+    <app-heatmap-chart [data]='data'></app-heatmap-chart>
+</ng-template>
+<div class='basic-dialog'>
+    <h1>{{ title }}</h1>
+    <p class='subtitle'>{{ dataTime }}</p>
+    <p class='subtitle' [matTooltip]='fullFilterString' matTooltipClass='tooltip-class' matTooltipPosition='below'>{{ filterString }}</p>
+    <div *ngTemplateOutlet='displayComponent' class='full-content'></div>
+    <button mat-button mat-dialog-close class='close-dialog'>
+        <fa-icon [icon]='faTimes' class='icon'></fa-icon>
+    </button>
+</div>

@@ -1,0 +1,45 @@
+<div class='basic-dialog'>
+  <h1>{{ title }} 過濾篩選</h1>
+  <hr />
+  <div class='basic-dialog-content' [class]='columnStyle'>
+    <div *ngIf='district.show' class='w50'>
+      <div *ngIf='district.show'>
+        <h1>{{ district.title }}</h1>
+        <app-options [data]='district.data' [selectedOption]='defaultDistrict' (selectedOptionEvent)='optionsHandler($event)'></app-options>
+      </div>
+    </div>
+    <div [class]='columnWidthStyle'>
+      <div *ngIf='datepicker.show'>
+        <h1>時間篩選</h1>
+        <app-single-day *ngIf='datepicker.singleDateFilter' [initDate]='initDateRange.startDate' (selectedDateEvent)='timeHandler($event)'></app-single-day>
+        <app-day *ngIf='datepicker.yearMonthDateFilter' [initDate]='initDateRange' (selectedDateEvent)='timeHandler($event)'></app-day>
+        <app-month *ngIf='datepicker.yearMonthFilter' [initDate]='initDateRange' (selectedDateEvent)='timeHandler($event)'></app-month>
+        <app-year *ngIf='datepicker.yearFilter' [initDate]='initDateRange.startDate' (selectedDateEvent)='timeHandler($event)'></app-year>
+        <app-hour *ngIf='datepicker.hourFilter' (selectedHourEvent)='hourHandler($event)'></app-hour>
+      </div>
+      <div *ngIf='peakHour.show'>
+        <h1>白天/晚上</h1>
+        <app-checkboxes [options]='peakHour.data' (checkedEvent)='peakHourHandler($event)'></app-checkboxes>
+      </div>
+      <div *ngIf='dayType.show'>
+        <h1>平假日</h1>
+        <app-checkboxes [options]='dayType.data' (checkedEvent)='dayTypeHandler($event)'></app-checkboxes>
+      </div>
+      <div *ngIf='options.show'>
+        <h1>{{ options.title }}</h1>
+        <app-options [data]='options.data' [selectedOption]='selectedOption' (selectedOptionEvent)='optionsHandler($event)'></app-options>
+      </div>
+      <div *ngIf='checkboxes.show'>
+        <h1>{{ checkboxes.title }}</h1>
+        <app-checkboxes [allComplete]='checkboxes.allChecked' [options]='checkboxes.data' (checkedEvent)='checkboxesHandler($event)'></app-checkboxes>
+      </div>
+    </div>
+  </div>
+  <button mat-button mat-dialog-close class='close-dialog'>
+    <fa-icon [icon]='faTimes' class='icon'></fa-icon>
+  </button>
+  <button mat-flat-button color='primary' class='submit' [mat-dialog-close]='filterOption'>
+    <fa-icon [icon]='faPaperPlane' class='icon'></fa-icon>
+    <span>送出</span>
+  </button>
+</div>

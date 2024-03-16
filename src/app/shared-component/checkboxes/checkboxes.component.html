@@ -1,0 +1,19 @@
+<section class='section'>
+    <mat-checkbox
+        [checked]='allComplete'
+        [(ngModel)]='allComplete'
+        class='checkbox'
+        color='primary'
+        (ngModelChange)='updateAllComplete()'>
+        全選
+    </mat-checkbox>
+    <mat-checkbox 
+        *ngFor='let option of options'
+        class='checkbox'
+        color='primary'
+        [value]='option.value'
+        [(ngModel)]='option.checked'
+        (ngModelChange)="checkedChange(option.checked)">
+        {{ option.name }}
+    </mat-checkbox>
+</section>
