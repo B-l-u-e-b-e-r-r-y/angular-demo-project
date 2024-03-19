@@ -16,6 +16,18 @@ import * as moment from 'moment';
 })
 export class HomePageComponent implements OnInit {
 
+  initYesterday: string = this.utillService.getYesterday();
+  initStartTime: string = this.utillService.getLastMonthTime().start;
+  initEndTime: string = this.utillService.getLastMonthTime().end;
+
+  setTime(key: string, time: string) {
+    this[`${key}Card`].dataTime = time;
+  }
+
+  setFilterString(key: string, filterString: string) {
+    this[`${key}Card`].filterString = filterString;
+  }
+
   topTenCongestedRoadsCard: Card = {
     title: 'Chart A',
     dataTime: '時間',
@@ -28,6 +40,33 @@ export class HomePageComponent implements OnInit {
     yAxis: [],
     xAxis: [],
   };
+  
+  topTenCongestedRoadsData(filterString: string) {
+    const key = 'topTenCongestedRoads';
+    const data = this.topRoadTpiService.getData();
+    const now = moment(new Date()).format('YYYY/MM/DD HH:MM:00');
+    this.topTenCongestedRoads = data;
+    this.setTime(key, `最後更新時間：${now}`);
+    this.setFilterString(key, filterString);
+  }
+
+  async getTopTenCongestedRoadsData(e: FilterOption) {
+    let filterString: string = '';
+    let params: ApiParams = {
+      $top: 10
+    };
+    await this.topRoadTpiService.fetchData(params);
+    this.topTenCongestedRoadsData(filterString);
+  }
+
+  async fetchTopTenCongestedRoadsData() {
+    const params: ApiParams = {
+      $top: 10,
+      $orderby: 'tpi desc'
+    };
+    await this.topRoadTpiService.fetchData(params);
+  }
+
 
   topTenEasyCongestedRoadsCard: Card = {
     title: 'Chart B',
@@ -41,6 +80,30 @@ export class HomePageComponent implements OnInit {
     xAxis: [],
   };
 
+  topTenEasyCongestedRoadsData(
+    startTime: string = this.initStartTime,
+    endTime: string = this.initEndTime) {
+    const key = 'topTenEasyCongestedRoads';
+    const data = this.topRoadTpiHistoryService.getData();
+    this.topTenEasyCongestedRoads = data;
+    this.setTime(key, `時間範圍：${startTime} ~ ${endTime}`);
+    this.utillService.setTime(key, startTime, endTime);
+  }
+
+  async getTopTenEasyCongestedRoadsData(e: FilterOption) {
+    let params: ApiParams = {};
+    await this.topRoadTpiHistoryService.fetchData(params);
+    this.topTenEasyCongestedRoadsData(e.startTime, e.endTime);
+  }
+
+  async fetchTopTenEasyCongestedRoadData(
+    startTime: string = this.initStartTime,
+    endTime: string = this.initEndTime) {
+    const params: ApiParams = {};
+    await this.topRoadTpiHistoryService.fetchData(params);
+  }
+
+
   roadAvgTravelSpeedCard: Card = {
     title: 'Chart C',
     dataTime: '',
@@ -51,96 +114,6 @@ export class HomePageComponent implements OnInit {
     lines: [
       { name: '路名', values: [] }
     ]
-  }
-
-  spatiotemporalAnalysisCard: Card = {
-    title: 'Chart D',
-    dataTime: '',
-    componentName: 'spatiotemporalAnalysis'
-  };
-  spatiotemporalAnalysis: HeatmapChart = {
-    yAxis: [],
-    xAxis: [],
-    showVisualMap: true,
-    data: []
-  };
-
-  trafficTrendCard: Card = {
-    title: 'Chart E',
-    dataTime: '',
-    componentName: 'trafficTrend'
-  };
-  trafficTrend: LineChart = {
-    xAxis: [],
-    lines: []
-  }
-
-  initYesterday: string = this.utillService.getYesterday();
-  initStartTime: string = this.utillService.getLastMonthTime().start;
-  initEndTime: string = this.utillService.getLastMonthTime().end;
-
-  setTime(key: string, time: string) {
-    this[`${key}Card`].dataTime = time;
-  }
-
-  setFilterString(key: string, filterString: string) {
-    this[`${key}Card`].filterString = filterString;
-  }
-
-  async getTopTenCongestedRoadsData(e: FilterOption) {
-    let filterString: string = '';
-    let params: ApiParams = {
-      $top: 10
-    };
-    await this.topRoadTpiService.fetchData(params);
-    this.topTenCongestedRoadsData(filterString);
-  }
-
-  async getTopTenEasyCongestedRoadsData(e: FilterOption) {
-    let params: ApiParams = {};
-    await this.topRoadTpiHistoryService.fetchData(params);
-    this.topTenEasyCongestedRoadsData(e.startTime, e.endTime);
-  }
-
-  async getRoadAvgTravelSpeedData(e: FilterOption) {
-    let params: ApiParams = {};
-    await this.roadTpiService.fetchRoadAvgTravelSpeedData(params);
-    this.roadAvgTravelSpeedData(e.roadName, e.startTime, e.endTime);
-  }
-
-  async getSpatiotemporalAnalysisData(e: FilterOption) {
-    const params: ApiParams = {
-      $orderby: 'infoTime asc'
-    };
-    await this.roadTpiService.fetchSpatiotemporalAnalysisData(params);
-    this.spatiotemporalAnalysisData(e.startTime);
-  }
-
-  async getTrafficTrendData(e: FilterOption) {
-    let params: ApiParams = {
-      $orderby: 'infoTime asc'
-    };
-    await this.totalMoeService.fetchData(params);
-    this.trafficTrendData(e.startTime);
-  }
-
-  topTenCongestedRoadsData(filterString: string) {
-    const key = 'topTenCongestedRoads';
-    const data = this.topRoadTpiService.getData();
-    const now = moment(new Date()).format('YYYY/MM/DD HH:MM:00');
-    this.topTenCongestedRoads = data;
-    this.setTime(key, `最後更新時間：${now}`);
-    this.setFilterString(key, filterString);
-  }
-
-  topTenEasyCongestedRoadsData(
-    startTime: string = this.initStartTime,
-    endTime: string = this.initEndTime) {
-    const key = 'topTenEasyCongestedRoads';
-    const data = this.topRoadTpiHistoryService.getData();
-    this.topTenEasyCongestedRoads = data;
-    this.setTime(key, `時間範圍：${startTime} ~ ${endTime}`);
-    this.utillService.setTime(key, startTime, endTime);
   }
 
   roadAvgTravelSpeedData(
@@ -154,35 +127,10 @@ export class HomePageComponent implements OnInit {
     this.utillService.setTime(key, startTime, endTime);
   }
 
-  spatiotemporalAnalysisData(date: string = this.initYesterday) {
-    const key = 'spatiotemporalAnalysis';
-    const data = this.roadTpiService.getData(key);
-    this.spatiotemporalAnalysis = data;
-    this.setTime(key, `時間：${date}`);
-    this.utillService.setTime(key, date, date);
-  }
-
-  trafficTrendData(date: string = this.initYesterday) {
-    const key = 'trafficTrend';
-    const data = this.roadTpiService.getData(key);
-    this.trafficTrend = data;
-    this.setTime(key, `時間：${date}`);
-    this.utillService.setTime(key, date, date);
-  }
-
-  async fetchTopTenCongestedRoadsData() {
-    const params: ApiParams = {
-      $top: 10,
-      $orderby: 'tpi desc'
-    };
-    await this.topRoadTpiService.fetchData(params);
-  }
-
-  async fetchTopTenEasyCongestedRoadData(
-    startTime: string = this.initStartTime,
-    endTime: string = this.initEndTime) {
-    const params: ApiParams = {};
-    await this.topRoadTpiHistoryService.fetchData(params);
+  async getRoadAvgTravelSpeedData(e: FilterOption) {
+    let params: ApiParams = {};
+    await this.roadTpiService.fetchRoadAvgTravelSpeedData(params);
+    this.roadAvgTravelSpeedData(e.roadName, e.startTime, e.endTime);
   }
 
   async fetchRoadAvgTravelSpeedData(
@@ -193,9 +141,57 @@ export class HomePageComponent implements OnInit {
     await this.roadTpiService.fetchRoadAvgTravelSpeedData(params);
   }
 
+
+  spatiotemporalAnalysisCard: Card = {
+    title: 'Chart D',
+    dataTime: '',
+    componentName: 'spatiotemporalAnalysis'
+  };
+  spatiotemporalAnalysis: HeatmapChart = {
+    yAxis: [],
+    xAxis: [],
+    showVisualMap: true,
+    data: []
+  };
+
+  spatiotemporalAnalysisData(date: string = this.initYesterday) {
+    const key = 'spatiotemporalAnalysis';
+    const data = this.roadTpiService.getData(key);
+    this.spatiotemporalAnalysis = data;
+    this.setTime(key, `時間：${date}`);
+    this.utillService.setTime(key, date, date);
+  }
+
   async fetchSpatiotemporalAnalysisData(date: string = this.initYesterday) {
     const params: ApiParams = {};
     await this.roadTpiService.fetchSpatiotemporalAnalysisData(params);
+  }
+
+  async getSpatiotemporalAnalysisData(e: FilterOption) {
+    const params: ApiParams = {
+      $orderby: 'infoTime asc'
+    };
+    await this.roadTpiService.fetchSpatiotemporalAnalysisData(params);
+    this.spatiotemporalAnalysisData(e.startTime);
+  }
+
+
+  trafficTrendCard: Card = {
+    title: 'Chart E',
+    dataTime: '',
+    componentName: 'trafficTrend'
+  };
+  trafficTrend: LineChart = {
+    xAxis: [],
+    lines: []
+  }
+
+  trafficTrendData(date: string = this.initYesterday) {
+    const key = 'trafficTrend';
+    const data = this.roadTpiService.getData(key);
+    this.trafficTrend = data;
+    this.setTime(key, `時間：${date}`);
+    this.utillService.setTime(key, date, date);
   }
 
   async fetchTrafficTrendData(date: string = this.initYesterday) {
@@ -203,17 +199,25 @@ export class HomePageComponent implements OnInit {
     await this.totalMoeService.fetchData(params);
   }
 
+  async getTrafficTrendData(e: FilterOption) {
+    let params: ApiParams = {
+      $orderby: 'infoTime asc'
+    };
+    await this.totalMoeService.fetchData(params);
+    this.trafficTrendData(e.startTime);
+  }
+
   async fetchData() {
-    try {
-      await this.roadSectionsService.fetchData();
-      await this.fetchTopTenCongestedRoadsData();
-      await this.fetchTopTenEasyCongestedRoadData();
-      await this.fetchRoadAvgTravelSpeedData('XX路');
-      await this.fetchSpatiotemporalAnalysisData();
-      await this.fetchTrafficTrendData();
-    } catch(err) {
-      console.log(err);
-    }
+    Promise.allSettled([
+      this.roadSectionsService.fetchData(),
+      this.fetchTopTenCongestedRoadsData(),
+      this.fetchTopTenEasyCongestedRoadData(),
+      this.fetchRoadAvgTravelSpeedData('XX路'),
+      this.fetchSpatiotemporalAnalysisData(),
+      this.fetchTrafficTrendData(),
+    ])
+      .then((value) => {})
+      .catch((error)=> console.log(error));
   }
 
   constructor(
